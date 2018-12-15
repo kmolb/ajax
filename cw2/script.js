@@ -10,6 +10,7 @@ httpRequest.onreadystatechange = function() {
       const catUrl = JSON.parse(httpRequest.response);
       console.log(catUrl);
      alert(catUrl.setup);
+    
      console.log(catUrl.setup);
      alert(catUrl.punchline);
      console.log(catUrl.punchline);
