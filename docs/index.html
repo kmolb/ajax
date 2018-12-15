@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="description" content="Presentation">
+    <meta name="keywords" content="presentation">
+    <meta name="author" content="mat3e">
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+    <meta content="utf-8" http-equiv="encoding">
+
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/white.css">
+    <link rel="stylesheet" href="css/idea.css">
+    <link rel="stylesheet" href="css/fontawesome.css">
+    <style>
+        #header {
+            color: #10a8ae;
+            text-align: left;
+            line-height: .85;
+
+            padding-left: .1em;
+
+            border-left: solid .1em #10a8ae;
+        }
+
+        #header-logo {
+            width: 290px;
+            height: 105px;
+            background: url('img/logo.png') no-repeat;
+
+            top: -4em;
+            right: 0;
+            position: absolute;
+        }
+
+        #about-me {
+            list-style-type: none;
+            margin-left: 12.5%;
+            float: left;
+        }
+
+        #about-me a {
+            color: white;
+        }
+
+        #about-me ul a:hover {
+            color: #dd5566;
+        }
+
+        .slides section img.pure-img {
+            border: none;
+            box-shadow: none;
+        }
+
+        code[contenteditable="true"] {
+            border: 0;
+            outline: 0;
+        }
+
+        .slides section pre {
+            margin-bottom: 0;
+        }
+
+        .slides section pre+button {
+            cursor: pointer;
+
+            font-size: .65em;
+            font-weight: 100;
+            -webkit-font-smoothing: antialiased;
+
+            color: white;
+            background: rgb(175, 30, 35);
+
+            padding: 0 3px;
+            border: transparent;
+            border-radius: 4px;
+        }
+
+        .slides section a .stripped-img {
+            border: none;
+            margin: 0;
+            box-shadow: none;
+            background-color: rgba(255, 255, 255, 0);
+        }
+
+        .slides section a .stripped-img:hover {
+            border: none;
+            margin: 0;
+            box-shadow: none;
+            background-color: rgba(255, 255, 255, 0);
+        }
+
+        .slides section .comment {
+            margin-top: -20px;
+            margin-bottom: 20px;
+            color: gray;
+        }
+
+        .reveal .slides section .fragment.replace {
+            transition: none;
+            display: inline-block;
+        }
+
+        .reveal .slides section .fragment.fade-out.visible.replace {
+            display: none;
+        }
+
+        .reveal .slides section .fragment.fade-in.replace {
+            display: none;
+        }
+
+        .reveal .slides section .fragment.fade-in.visible.replace {
+            display: inline-block;
+        }
+    </style>
+    <script>
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
+        document.getElementsByTagName('head')[0].appendChild(link);
+    </script>
+</head>
+
+<body>
+    <div class="reveal">
+        <div class="slides">
+            <section data-background-image>
+                <section data-background-color="#fff">
+                    <h1 id="header">JavaScript AJAX, Promise'y</h1>
+                    <div id="header-logo"></div>
+                </section>
+                <section data-background-image="img/bg-hd.jpg" data-background-transition="zoom" data-background-size="75%">
+                    <ul id="about-me">
+                        <li>
+                            <a href="https://www.linkedin.com/in/mateusz-chrzonstowski/">
+                                <i class="fab fa-linkedin" style="color: #0077B5; background-color: #FFF; line-height: .75em"></i>
+                                /mateusz-chrzonstowski
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://twitter.com/_mat3e_">
+                                <i class="fab fa-twitter-square" style="background-color: #1DA1F2; line-height: .75em"></i>
+                                /_mat3e_
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.reddit.com/user/_mat3e_">
+                                <i class="fab fa-reddit-square" style="background-color: #FF4500; line-height: .75em"></i>
+                                /_mat3e_
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://github.com/mat3e/">
+                                <i class="fab fa-github-square" style="color: #24292E; background-color: #FFF; line-height: .75em"></i>
+                                /mat3e
+                            </a>
+                        </li>
+                    </ul>
+                </section>
+            </section>
+            <section>
+                <h2>
+                    <span>Plan zajęć</span>
+                </h2>
+                <ol>
+                    <li class="fragment highlight-red">Wprowadzenie</li>
+                    <li>Działanie JS-a</li>
+                    <li>HTTP, AJAX</li>
+                    <li><code>fetch</code></li>
+                    <li><code>Promise</code></li>
+                    <li><code>async/await</code></li>
+                </ol>
+            </section>
+            <section>
+                <h2>
+                    <span>push & pop</span>
+                </h2>
+                <pre><code class="javascript" data-trim contentEditable="true">
+                    const values = [1];
+                </code><code class="javascript fragment" data-trim contentEditable="true">
+                    values.push(2);
+                    values.push(3);
+                </code><code class="javascript fragment" data-trim contentEditable="true">    
+                    alert(values); // 1,2,3
+                </code><code class="javascript fragment" data-trim contentEditable="true">
+                    alert(values.pop()); // 3
+                    alert(values); // 1,2
+                </code></pre>
+                <button onclick="controls.evalCode(this)" style="font-weight: bold">eval</button>
+                <p>
+                    <ol>
+                        <li class="fragment">"Upychanie" elementu na końcu tablicy</li>
+                        <li class="fragment">Zdejmowanie ostatniego elementu</li>
+                    </ol>
+                </p>
+            </section>
+            <section>
+                <h2><span>Wizualizacja</span></h2>
+                <div>
+                    <img src="img/rotate.png" style="height: 120px; border: none; box-shadow: none" class="fragment">
+                </div>
+                <img src="img/pushpop.png" style="height: 270px" class="fragment">
+                <a class="fragment" href="https://www.pexels.com/search/books/">
+                    <img style="height: 270px" src="img/books.jpg" title="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4v77PclsFSv_hPg4JLeQQQoaJ8-c-JzFVE_XvI3gsImot7NvZ">
+                </a>
+            </section>
+            <section>
+                <h2 style="margin: 0">
+                    <span>Stos, LIFO</span>
+                </h2>
+                <div>
+                    <ul>
+                        <li class="fragment">Last in, first out</li>
+                        <li class="fragment">
+                            <i>Limited access data structure</i>
+                            <ul>
+                                <li class="fragment">Tablica = <i>random access</i></li>
+                            </ul>
+                        </li>
+                        <li class="fragment">Komunikacja tylko "z jednej strony"
+                            <ul>
+                                <li class="fragment">
+                                    <code>push</code>&
+                                    <code>pop</code> wręcz zarezerwowane dla stosu
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <a href="https://hackernoon.com/30-jokes-only-programmers-will-get-a901e1cea549" class="fragment">
+                    <img src="img/stack.png" title="https://hackernoon.com/30-jokes-only-programmers-will-get-a901e1cea549"
+                        style="width: 50%">
+                </a>
+                <aside class="notes">
+                    Jakby tak nałożyć na siebie chomąto-obostrzenie i używać na tablicy tylko push/pop, to mamy stos
+                    <br>
+                    Warto poświęcić chwilę, żeby to zrozumieć, bo struktury danych potrafią się pojawiać podczas
+                    rekrutacji. Stos jest podstawą.
+                </aside>
+            </section>
+            <section>
+                <h2>
+                    <span>Czo ten stos?</span>
+                </h2>
+                <p>
+                    <ul>
+                        <li class="fragment">
+                            <i>call stack</i>
+                        </li>
+                        <li class="fragment">
+                            <i>stack trace</i>
+                        </li>
+                    </ul>
+                    <a class="fragment" href="https://en.wikipedia.org/wiki/Stack_Overflow">
+                        <img style="width: 240px; display: block; margin: 0 auto; border: none; box-shadow: none" src="img/so.png"
+                            title="https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Stack_Overflow_logo.svg/800px-Stack_Overflow_logo.svg.png">
+                    </a>
+                </p>
+                <aside class="notes">
+                    <ul>
+                        <li>
+                            <i>call stack</i> = seria wywołań; funkcja może wołać inną funkcję, a ta inną itd.
+                            "najgłębsza"
+                            musi się skończyć, żeby poprzednie mogły. Komputer realizuje to właśnie stosem
+                        </li>
+                        <li>
+                            <i>stack trace</i> = informacja w jakim kontekście program się wywalił
+                        </li>
+                        <li>
+                            <i>Stack Overflow</i> = najbardziej znane forum dla programistów; nazwa pochodzi od błędu
+                            przepełnienia
+                            stosu (~call stack)</li>
+                    </ul>
+                </aside>
+            </section>
+            <section>
+                <h2>
+                    <span>Plan zajęć</span>
+                </h2>
+                <ol>
+                    <li>Wprowadzenie</li>
+                    <li class="fragment highlight-red">Działanie JS-a</li>
+                    <li>HTTP, AJAX</li>
+                    <li><code>fetch</code></li>
+                    <li><code>Promise</code></li>
+                    <li><code>async/await</code></li>
+                </ol>
+            </section>
+            <section>
+                <h2>
+                    <span>push & pop</span>
+                </h2>
+                <pre><code class="javascript" data-trim contentEditable="true">
+                    testStack();
+                </code><code class="javascript fragment" data-trim contentEditable="true">
+                    function testStack() {
+                      const result = runHeavyLogic();
+                      alert(result);
+                    }
+                </code><code class="javascript fragment" data-trim contentEditable="true">
+                    function runHeavyLogic() {
+                      const num = getRandomNumber();
+                      return num + 2;
+                    }
+                </code><code class="javascript fragment" data-trim contentEditable="true">
+                    function getRandomNumber() {
+                      const from1to10 = parseInt(Math.random() * 10) + 1;
+                      return from1to10;
+                    }
+                </code></pre>
+                <button onclick="controls.evalCode(this)" style="font-weight: bold">eval</button>
+                <aside class="notes">
+                    <ul>
+                        <li>Narysować ramki stosu na tablicy</li>
+                        <li><code class="javascript">throw new Error('forced fail');</code></li>
+                        <li><code class="javascript">console.trace();</code></li>
+                    </ul>
+                </aside>
+            </section>
+            <section>
+                <h2>
+                    <span>push & pop</span>
+                </h2>
+                <pre><code class="javascript" data-trim contentEditable="true">
+                    testStack();
+
+                    function testStack() {
+                      const result = runHeavyLogic();</code><code class="javascript fragment fade-in replace" contentEditable="true" style="padding-top: 0; padding-bottom: 0">  setTimeout(interruptWithAlert, 1000);</code><code class="javascript" data-trim contentEditable="true" style="padding-top: 0">
+                      alert(result);
+                    }
+
+                    function runHeavyLogic() {
+                      // simplified
+                      return 2 + 2;
+                    }
+
+                    function interruptWithAlert() {
+                        alert('test');
+                    }
+                </code></pre>
+                <button onclick="controls.evalCode(this)" style="font-weight: bold">eval</button>
+                <aside class="notes">
+                    <ul>
+                        <li>Narysować Event Managera i Callback Queue (onclick, eventy, timeouty, ajax)</li>
+                        <li><code class="javascript">setTimeout</code> na 0</li>
+                        <li>Dać alert first i second</li>
+                        <li>Ten interrupt to tak naprawdę jest callback</li>
+                    </ul>
+                </aside>
+            </section>
+            <section data-background-image="img/hollywood.jpg">
+                <h2><span style="color: #ccc">Callback?</span></h2>
+                <h3><span style="color: #ccc">Don't call us, we'll call you</span></h3>
+                <aside class="notes">Polska wersja: oddzwonimy do pana. Ale ja nie mam telefonu</aside>
+            </section>
+            <section>
+                <h2 style="margin: 0">
+                    <span>Ćwiczenie 1</span>
+                </h2>
+                <aside class="comment" style="font-size: .5em">Po więcej wrażeń zerknij na
+                    <i>cw1-lvl2</i>
+                </aside>
+                <ol style="line-height: 1; font-size: .9em">
+                    <li class="fragment">Napisać funkcję, losującą liczby
+                        <ul>
+                            <li class="fragment">x: <code>[0, window.innerWidth-100)</code></li>
+                            <li class="fragment">y: <code>[0, window.innerHeight-100)</code></li>
+                            <li class="fragment">Użyć <code>parseInt</code> oraz <code>Math.random()</code></li>
+                        </ul>
+                    </li>
+                    <li class="fragment">W funkcji stworzyć diva:
+                        <pre style="width: 100%; margin: 0"><code class="javascript">const d = document.createElement('div')</code></pre>
+                    </li>
+                    <li class="fragment">Przypisać styl:
+                        <pre style="width: 100%; margin: 0"><code class="javascript">d.style.cssText = (`
+  position: absolute; left: ${x}px; top: ${y}px; 
+  width: 100px; height: 100px; background: yellow
+`);</code></pre>
+                    </li>
+                    <li class="fragment">Callback na kliknięcie w diva, użyć <code>d.remove()</code></li>
+                    <li class="fragment">"Podłączyć": <code>document.body.appendChild(d);</code></li>
+                    <li class="fragment">Użyć napisanej funkcji wewnątrz <code>setInterval</code>, wołać co 2
+                        sekundy
+                    </li>
+                    <li class="fragment">W których miejscach działa <i>Event Loop</i>?</li>
+                </ol>
+            </section>
+            <section>
+                <h2>
+                    <span>Plan zajęć</span>
+                </h2>
+                <ol>
+                    <li>Wprowadzenie</li>
+                    <li>Działanie JS-a</li>
+                    <li class="fragment highlight-red">HTTP, AJAX</li>
+                    <li><code>fetch</code></li>
+                    <li><code>Promise</code></li>
+                    <li><code>async/await</code></li>
+                </ol>
+            </section>
+            <section>
+                <h2>
+                    <span>HTTP</span>
+                </h2>
+                <ul>
+                    <li class="fragment">Gdy wpisujemy adres, np. "google.pl", przeglądarka dodaje od siebie "http://"</li>
+                    <li class="fragment">W internetach HTTP jest wszechobecne!</li>
+                    <li class="fragment">Najpopularniejszą metodą protokołu HTTP jest GET<span class="fragment">; są
+                            jeszcze inne (np. PUT, POST, DELETE)</span></li>
+                    <li class="fragment">Przeglądarka wysyła żądanie (request) HTTP GET pod adres, np. <i>google.pl</i></li>
+                    <li class="fragment">W odpowiedzi (response) dostajemy jakiegoś tam HTML-a, JS-a itd. - naszą
+                        stronę</li>
+                    <li class="fragment">Możemy też dostać: obrazek, JSON-a, XML-a, ...</li>
+                </ul>
+            </section>
+            <section>
+                <h2>
+                    <span>Request</span>
+                </h2>
+                <ul>
+                    <li class="fragment">Pod konkretny adres, konkretną metodą
+                        <ul>
+                            <li class="fragment">Z parametrami, np. <code>q=mistrz</code> w <a href="https://www.google.pl/search?q=mistrz">https://www.google.pl/search?q=mistrz</a></li>
+                        </ul>
+                    </li>
+                    <li class="fragment">Nagłówki (headery) żądania:
+                        <ul>
+                            <li class="fragment">Accept</li>
+                            <li class="fragment">Content-Type</li>
+                        </ul>
+                    </li>
+                    <li class="fragment">Ciało żądania (request body):
+                        <ul>
+                            <li class="fragment">Formularz (pary klucz-wartość)</li>
+                            <li class="fragment">JSON</li>
+                        </ul>
+                    </li>
+                </ul>
+                <aside class="notes">
+                    <ul>
+                        <li>Nagłówek np. jeszcze Cookie, Authorization</li>
+                        <li>application/json</li>
+                        <li>Pokazać POSTmana</li>
+                    </ul>
+                </aside>
+            </section>
+            <section>
+                <h2>
+                    <span>Response</span>
+                </h2>
+                <ul>
+                    <li class="fragment">Status
+                        <ul>
+                            <li class="fragment">404<span class="fragment"> Not Found</span></li>
+                            <li class="fragment">200<span class="fragment"> OK</span></li>
+                            <li class="fragment">500<span class="fragment"> Internal Server Error</span></li>
+                        </ul>
+                    </li>
+                    <li class="fragment">Nagłówki (tak samo jak z requestem)</li>
+                    <li class="fragment">Ciało
+                        <ul>
+                            <li class="fragment">Dostosowane do "Accept" z requestu</li>
+                        </ul>
+                    </li>
+                </ul>
+                <aside class="notes">Powiedzieć jakie są rodziny błędów</aside>
+            </section>
+            <section>
+                <a href="https://kahoot.it/">
+                    <img src="img/kahoot.svg" class="pure-img">
+                </a>
+            </section>
+            <section>
+                <h2>
+                    <span>AJAX</span>
+                </h2>
+                <ul>
+                    <li class="fragment"><i>Asynchronous JavaScript and XML</i></li>
+                    <li class="fragment"><code>XMLHttpRequest</code></li>
+                    <li class="fragment">Wysyłanie żądań HTTP "za plecami"</li>
+                    <li class="fragment">Przyjście odpowiedzi = odpalenie naszego callbacka</li>
+                    <li class="fragment">Pierwsza wersja = trochę bieda</li>
+                </ul>
+                <aside class="notes">
+                    Omówić/rysować sync vs. async
+                    <br>
+                    Nie czekamy na odpowiedź, tylko jak przyjdzie, to przyjdzie
+                </aside>
+            </section>
+            <section id="cat-example" style="background-size: cover" data-background-image="">
+                <h2>
+                    <span>Przykład</span>
+                </h2>
+                <pre><code style="max-height: 40em; background-color: rgba(255,255,255,.3)" class="javascript" data-trim contentEditable="true">
+                    const httpRequest = new XMLHttpRequest();
+
+                    // callback
+                    httpRequest.onreadystatechange = function() {
+                      if (httpRequest.readyState === XMLHttpRequest.DONE) {
+                        if (httpRequest.status === 200) {
+                          console.log(httpRequest);
+                          const catUrl = JSON.parse(httpRequest.response).file;
+                          document.getElementById('cat-example')
+                            .style.backgroundImage = `url(${catUrl})`;
+                        }
+                      }
+                    };
+
+                    // start
+                    httpRequest.open('GET', 'https://aws.random.cat/meow');
+                    httpRequest.send();
+                </code></pre>
+                <button onclick="controls.evalCode(this)" style="font-weight: bold">eval</button>
+                <aside class="notes">
+                    <ul>
+                        <li>Pokazać najpierw tę stronę - jak działa i co zwraca; POSTman?</li>
+                        <li>Szczegółowo o callbacku</li>
+                        <li>'request' zawiera info o odpowiedzi - status, response, responseText (console.log)</li>
+                        <li>Callback na każdą zmianę stanu, patrzymy kiedy DONE</li>
+                        <li>JSON.parse - tekst na obiekt</li>
+                        <li>Powinniśmy coś robić dla statusów nie-200: np. meoww</li>
+                    </ul>
+                </aside>
+            </section>
+            <section>
+                <h2><a href="https://github.com/toddmotto/public-apis">https://github.com/toddmotto/public-apis</a></h2>
+            </section>
+            <section>
+                <h2>
+                    <span>Ćwiczenie 2</span>
+                </h2>
+                <ol>
+                    <li class="fragment">Zapoznać się z
+                        <a href="https://github.com/15Dkatz/official_joke_api">https://github.com/15Dkatz/official_joke_api</a>
+                    </li>
+                    <li class="fragment">Pobrać kawał, wzorując się na przykładzie</li>
+                    <li class="fragment">Przy pomocy 2 <code>alert</code>ów wyświetlić "setup" i "punchline" kawału</li>
+                </ol>
+            </section>
+            <section>
+                <h2>
+                    <span>CORS</span>
+                </h2>
+                <ul>
+                    <li class="fragment"><i>Cross-Origin Resource Sharing</i></li>
+                    <li class="fragment">Np. mamy localhost:8080. Przeglądarka nie pozwala pytać między domenami
+                        (blokuje)
+                        <ul>
+                            <li class="fragment">Nie pozwoli nawet uderzyć do localhost:8081</li>
+                        </ul>
+                    </li>
+                    <li class="fragment">Kwestie bezpieczeństwa</li>
+                    <li class="fragment">Żeby odpytywać między domenami, pytany serwer musi ustawiać odpowiednie
+                        nagłówki
+                        <ul>
+                            <li class="fragment">Np. z jakich domen z zewnąrz akceptuje żądania</li>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+            <section>
+                <a href="https://kahoot.it/">
+                    <img src="img/kahoot.svg" class="pure-img">
+                </a>
+            </section>
+            <section>
+                <h2>
+                    <span>Plan zajęć</span>
+                </h2>
+                <ol>
+                    <li>Wprowadzenie</li>
+                    <li>Działanie JS-a</li>
+                    <li>HTTP, AJAX</li>
+                    <li class="fragment highlight-red"><code>fetch</code></li>
+                    <li><code>Promise</code></li>
+                    <li><code>async/await</code></li>
+                </ol>
+            </section>
+            <section>
+                <h2>
+                    <span><code>fetch</code></span>
+                </h2>
+                <ul>
+                    <li class="fragment">Uproszczone odpytywanie serwisów</li>
+                    <li class="fragment"><code>fetch(url)</code> - najprostsze wysłanie GET-a
+                        <ul>
+                            <li class="fragment">Dostępny też 2. parametr - obiekt np. z polami <code>method</code>,
+                                <code>body</code>, <code>headers</code></li>
+                        </ul>
+                    </li>
+                    <li class="fragment"><code>fetch(Request)</code> - alternatywne użycie</li>
+                    <li class="fragment"><code>Request</code>, <code>Response</code>, <code>Headers</code> - klasy
+                        pomocnicze</li>
+                    <li class="fragment">Używa obietnic (Promise)</li>
+                    <li class="fragment"><a href="https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch">Dokumentacja</a></li>
+                </ul>
+                <aside class="notes">
+                    url + 2. parametr to tak naprawdę konstruktor Requesta
+                    <br>
+                    JS - domyślnie chcemy JSON-a
+                </aside>
+            </section>
+            <section id="cat-fetch" style="background-size: cover" data-background-image="">
+                <h2>
+                    <span>Przykład</span>
+                </h2>
+                <pre><code style="max-height: 40em; background-color: rgba(255,255,255,.3)" class="javascript" data-trim contentEditable="true">
+                    fetch('https://aws.random.cat/meow').then(response => {
+                        console.log(response);
+                        response.json().then(catObj => {
+                            const catUrl = catObj.file;
+                            document.getElementById('cat-fetch')
+                              .style.backgroundImage = `url(${catUrl})`;
+                        });
+                    });
+                </code></pre>
+                <button onclick="controls.evalCode(this)" style="font-weight: bold">eval</button>
+                <aside class="notes">
+                    <ul>
+                        <li>Upewnić się z lambdą - że kojarzą i zastąpić im zwykłą funkcją</li>
+                        <li>response.ok</li>
+                        <li>Traktować then, jak sposób na podpięcie callbacka</li>
+                        <li>Callback, jak dostaniemy odpowiedź</li>
+                        <li>Callback, jak zrobimy JSON-a</li>
+                    </ul>
+                </aside>
+            </section>
+            <section>
+                <h2>
+                    <span>Ćwiczenie 3</span>
+                </h2>
+                <ol>
+                    <li class="fragment">Przepisać poprzedni kod na <code>fetch</code>a</li>
+                    <li class="fragment">Wykorzystać przykład i dokumentację <code>fetch</code>a</li>
+                    <li class="fragment">Wyświetlać kawały tylko, gdy odpowiedź ma status 200</li>
+                </ol>
+            </section>
+            <section>
+                <a href="https://kahoot.it/">
+                    <img src="img/kahoot.svg" class="pure-img">
+                </a>
+            </section>
+            <section>
+                <h2>
+                    <span>Plan zajęć</span>
+                </h2>
+                <ol>
+                    <li>Wprowadzenie</li>
+                    <li>Działanie JS-a</li>
+                    <li>HTTP, AJAX</li>
+                    <li><code>fetch</code></li>
+                    <li class="fragment highlight-red"><code>Promise</code></li>
+                    <li><code>async/await</code></li>
+                </ol>
+            </section>
+            <section data-background-image="img/hell.jpg" data-bacground-size="cover"></section>
+            <section>
+                <h2>
+                    <span><code>Promise</code></span>
+                </h2>
+                <ul>
+                    <li class="fragment">Zdarzenie, które kiedyś się spełni lub się wywali</li>
+                    <li class="fragment">Przykład:<span class="fragment"> zamówienie piwa w barze</span>
+                        <ul>
+                            <li class="fragment">Zostajemy z <strong>obietnicą</strong>, że je dostaniemy</li>
+                            <li class="fragment"><code>Promise</code>, <code>pending</code></li>
+                            <li class="fragment">Barman wręczył piwo - <code>Promise</code>, <code>fulfilled</code></li>
+                            <li class="fragment">Piwo się skończyło :( - dostajemy powód, przez który nie da się
+                                wypełnić obietnicy</li>
+                            <li class="fragment"><code>Promise</code>, <code>rejected</code></li>
+                        </ul>
+                    </li>
+                    <li class="fragment"><code>.catch(onRejected)</code> - callback na błąd</li>
+                    <li class="fragment"><code>.then(onFulfilled, onRejected)</code></li>
+                </ul>
+                <aside class="notes">
+                    jak zamawiasz piwo w barze to kelenerka zostawia Cię z obietnicą że je dostaniesz i może się ona
+                    spełnić, jak dostaniesz piwo, albo nie, jak dostaniesz powód - skońćzyło się...
+                    <ul>
+                        <li>pending - w trakcie</li>
+                        <li>fulfilled - wypełniona obietnica, ma już jakąś zawartość</li>
+                        <li>rejected - odrzucona, cały proces zakończył się porażką</li>
+                    </ul>
+                </aside>
+            </section>
+            <section>
+                <h2>
+                    <span>Przykład</span>
+                </h2>
+                <pre><code class="javascript" data-trim contentEditable="true">
+                    const firstPromise = Promise.resolve(3);
+                    console.log(firstPromise);
+                </code><code class="javascript fragment" data-trim contenteditable="true">
+                    console.log(Promise.reject('fail'));
+                </code></pre>
+                <button onclick="controls.evalCode(this)">eval</button>
+                <aside class="notes">
+                    <ul>
+                        <li>.catch(e => console.warn(e))</li>
+                        <li>Pokazać, że w momencie logowania, to pending, a po wyłączeniu i włączeniu konsoli
+                            już fulfilled</li>
+                    </ul>
+                </aside>
+            </section>
+            <section>
+                <h2>
+                    <span>Przykład 2</span>
+                </h2>
+                <pre><code class="javascript" data-trim contentEditable="true">
+                    Promise.all([
+                        Promise.resolve(3),
+                        new Promise((resolve, reject) => {
+                            alert('action!');
+                            resolve(4);
+                        }),
+                        new Promise((resolve, reject) => {
+                            setTimeout(resolve, 100, '555');
+                        })
+                    ]).then(fulfilleds => alert(fulfilleds));
+                </code></pre>
+                <button onclick="controls.evalCode(this)">eval</button>
+                <aside class="notes">
+                    <ul>
+                        <li>resolve, reject</li>
+                        <li>dodać np. Promise.reject('fail')</li>
+                        <li>then, catch, finally</li>
+                        <li>trochę o event loop i jak działa async w JS</li>
+                    </ul>
+                </aside>
+            </section>
+            <section data-background-image="img/ppap.gif" data-background-size="cover"></section>
+            <section>
+                <h2>
+                    <span><code>fetch</code> + <code>Promise</code></span>
+                </h2>
+                <ul>
+                    <li class="fragment">Metody <code>Response</code>'a też zwracają <code>Promise</code>'y:
+                        <ul>
+                            <li class="fragment"><code>response.json()</code></li>
+                            <li class="fragment"><code>response.text()</code></li>
+                        </ul>
+                    </li>
+                    <li class="fragment">Częsta sztuczka - .then().then().then()</li>
+                    <li class="fragment">"Spłaszczenie" piekła callbacków</li>
+                </ul>
+            </section>
+            <section id="cat-promise" style="background-size: cover" data-background-image="">
+                <h2>
+                    <span>Przykład</span>
+                </h2>
+                <pre><code style="max-height: 40em; background-color: rgba(255,255,255,.3)" class="javascript" data-trim contentEditable="true">
+                    fetch('https://aws.random.cat/meow')
+                        .then(response => response.json())
+                        .then(catObj => catObj.file)
+                        .then(catUrl => document.getElementById('cat-promise')
+                            .style.backgroundImage = `url(${catUrl})`);
+                </code></pre>
+                <button onclick="controls.evalCode(this)" style="font-weight: bold">eval</button>
+                <aside class="notes">
+                    <ul>
+                        <li>Pierwsze - "spłaszczenie" obietnic</li>
+                        <li>Następne - działanie na już wypełnionych obietnicach, bajer, ale nadmiarowe</li>
+                        <li>Przydatne np. przy frameworkach, operujących na obietnicach, jak chcemy dorobić coś swojego</li>
+                        <li>Poprawić te theny i dorobić metodę sprawdzającą response.ok</li>
+                        <li>then może też wystąpić po catch itd.; zwłaszcza jak catch coś zwraca, to ma to sens</li>
+                    </ul>
+                </aside>
+            </section>
+            <section>
+                <a href="https://kahoot.it/">
+                    <img src="img/kahoot.svg" class="pure-img">
+                </a>
+            </section>
+            <section>
+                <h2 style="margin: 0">
+                    <span>Ćwiczenie 4</span>
+                </h2>
+                <aside class="comment" style="font-size: .5em">Po więcej wrażeń zerknij na
+                    <i>cw4-lvl2</i>
+                </aside>
+                <ol>
+                    <li class="fragment">Usprawnić kod odpytujący API kawałów, korzystając z najnowszej wiedzy</li>
+                    <li class="fragment">Zadbać o sprawdzenie statusu
+                        <ul>
+                            <li class="fragment">Dla statusów innych niż 200 rzucać wyjątek:
+                                <pre style="width: 100%; margin: 0"><code class="javascript">throw new Error('Status not 200');</code></pre>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="fragment">Wykorzystać <code>catch</code></li>
+                </ol>
+            </section>
+            <section>
+                <h2>
+                    <span>Ćwiczenie 5</span>
+                </h2>
+                <ol>
+                    <li class="fragment">
+                        Zasymulować wysyłanie formularza:
+                        <ul>
+                            <li class="fragment">Ciało zapytania:
+                                <pre style="width: 100%; margin: 0"><code class="javascript" data-trim>
+                                new URLSearchParams({
+                                    geoit: 'JSON',
+                                    locate: '52.21667,21.03333'
+                                })</code></pre>
+                            </li>
+                            <li class="fragment">
+                                <pre style="width: 100%; margin: 0"><code class="javascript" data-trim>'Content-Type': 'application/x-www-form-urlencoded'</code></pre>
+                            </li>
+                            <li class="fragment">Metoda POST</li>
+                        </ul>
+                    </li>
+                    <li class="fragment">Wysłać pod <code>https://geocode.xyz</code>, zapoznać się z odpowiedzią</li>
+                    <li class="fragment">Pamiętać o obsłudze błędów</li>
+                </ol>
+            </section>
+            <section>
+                <h2>
+                    <span>Ćwiczenie 6</span>
+                </h2>
+                <ol>
+                    <li class="fragment">Stworzyć reactowy komponent AboutMe
+                        <ul>
+                            <li class="fragment">Utworzyć go jako klasę</li>
+                        </ul>
+                    </li>
+                    <li class="fragment">Komponent powinien oczekiwać propsa <code>me</code>, przyjmującego <code>stringa</code></li>
+                    <li class="fragment">W metodzie <code>componentDidMount</code>, pobierać dane z GitHub API:
+                        https://api.github.com/users/me, gdzie "me" to wartość propsa</li>
+                    <li class="fragment">Wyświetlić obrazek na podstawie pola <code>avatar_url</code> z pobranego
+                        obiektu</li>
+                    <li class="fragment">Obok obrazka dać treść pola <code>bio</code> i ostylować</li>
+                </ol>
+            </section>
+            <section>
+                <h2>
+                    <span>Plan zajęć</span>
+                </h2>
+                <ol>
+                    <li>Wprowadzenie</li>
+                    <li>Działanie JS-a</li>
+                    <li>HTTP, AJAX</li>
+                    <li><code>fetch</code></li>
+                    <li><code>Promise</code></li>
+                    <li class="fragment highlight-red"><code>async/await</code></li>
+                </ol>
+            </section>
+            <section>
+                <h2 style="margin-bottom: 0">
+                    <span><code>async</code>, <code>await</code></span>
+                </h2>
+                <pre style="margin-top: 0; line-height: 1.1"><code style="max-height: 40em; font-size: .9em" class="javascript" data-trim contenteditable="true">
+                    console.log(getGeo());
+
+                    async function getGeo() {
+                        const response = await fetch('https://geocode.xyz', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded',
+                            },
+                            body: new URLSearchParams({
+                                geoit: 'JSON',
+                                locate: '52.21667,21.03333'
+                            })
+                        });
+
+                        if(!response.ok) {
+                            throw new Error('Response status not 200');
+                        }
+
+                        return await response.json();
+                    }
+                </code></pre>
+                <button onclick="controls.evalCode(this)">eval</button>
+                <aside class="notes">
+                    Że taki ala synchroniczny kod, musiałby obsługiwać wyjątki try-catch
+                    <br>
+                    await tak naprawdę nie musi wystąpić, ale jest pomocny, jak chcemy pobrać coś z promise'a
+                    <br>
+                    zwracany jest promise
+                </aside>
+            </section>
+            <section>
+                <h2>
+                    <span>Dziękuję za uwagę.</span>
+                </h2>
+                <a href="https://www.reddit.com/r/ProgrammerHumor/comments/77tn93/i_could_really_go_for_some_ajax_right_about_now/">
+                    <img src="img/ajax-summary.png" style="width: 35%">
+                </a>
+            </section>
+        </div>
+    </div>
+    <script src="js/head.min.js"></script>
+    <script src="js/reveal.js"></script>
+    <script>
+        const controls = (function () {
+            Reveal.initialize({
+                history: true,
+                // - null: Media will only autoplay if data-autoplay is present
+                autoPlayMedia: null,
+                transition: 'slide', // none/fade/slide/convex/concave/zoom
+                transitionSpeed: 'default', // default/fast/slow
+                backgroundTransition: 'slide', // none/fade/slide/convex/concave/zoom
+                dependencies: [
+                    { src: 'js/classList.js', condition: function () { return !document.body.classList; } },
+
+                    { src: 'js/marked.js', condition: function () { return !!document.querySelector('[data-markdown]'); } },
+                    { src: 'js/markdown.js', condition: function () { return !!document.querySelector('[data-markdown]'); } },
+
+                    // Syntax highlight for <code> elements
+                    { src: 'js/highlight.js', callback: function () { hljs.initHighlightingOnLoad(); } },
+
+                    // Zoom in and out with Alt+click
+                    { src: 'js/zoom.js' },
+
+                    { src: 'notes/notes.js' },
+
+                    { src: 'js/math.js' }
+                ]
+            });
+
+            document.querySelectorAll('.reveal .slides > section:not([data-background-image])').forEach(s => {
+                s.setAttribute('data-background-image', 'img/logo.png');
+                s.setAttribute('data-background-size', '240px');
+                s.setAttribute('data-background-position', '20px 20px');
+            });
+
+            return {
+                evalCode: function (btn) {
+                    eval(btn.previousElementSibling.innerText);
+                }
+            }
+        })();
+    </script>
+</body>
+
+</html>
