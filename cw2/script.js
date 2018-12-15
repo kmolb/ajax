@@ -1,7 +1,9 @@
 const httpRequest = new XMLHttpRequest();
+const url = 'https://safe-falls-22549.herokuapp.com/random_joke';
 
 // callback
 httpRequest.onreadystatechange = function() {
+    
   if (httpRequest.readyState === XMLHttpRequest.DONE) {
     if (httpRequest.status === 200) {
       console.log(httpRequest);
@@ -10,12 +12,12 @@ httpRequest.onreadystatechange = function() {
      alert(catUrl.setup);
      console.log(catUrl.setup);
      alert(catUrl.punchline);
-     console.log(catUrl.punchline);
+     console.log(catUrl.pu);
       
     }
   }
 };
 
 // start
-httpRequest.open('GET', 'https://safe-falls-22549.herokuapp.com/random_joke');
+httpRequest.open('GET', url);
 httpRequest.send();
