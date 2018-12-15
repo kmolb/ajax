@@ -12,7 +12,7 @@ httpRequest.onreadystatechange = function() {
      alert(catUrl.setup);
      console.log(catUrl.setup);
      alert(catUrl.punchline);
-     console.log(catUrl.pu);
+     console.log(catUrl.punchline);
       
     }
   }
